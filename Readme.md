@@ -1,11 +1,13 @@
 # Developing the Rest Api App Using NodeJs, ExpressJs & MongoDB
 
 # Todo
-1. Register a user
-2. Login a user
-3. Who am I
-4. Add new product
-5. Update a product
-6. Get all products
-7. Get single product
-8. Delete a product
+1. Register a user [+]
+2. Login a user [+]
+3. Who am I [+]
+4. Refresh the token
+5. Logout the user
+6. Add new product
+7. Update a product
+8. Get all products
+9. Get single product
+10. Delete a product

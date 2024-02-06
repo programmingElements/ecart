@@ -34,5 +34,12 @@ const signInValidation = z.object({
     .max(100, {message: "password does not exceed 100 characters."})
 })
 
+const refreshTokenValidation = z.object({
+    refresh_token: z
+    .string({ required_error: "token is required" })
+    .trim()
+    .min(8, { message: "token contains atleast 8 characters." })
+})
 
-export { signUpValidation, signInValidation };
+
+export { signUpValidation, signInValidation, refreshTokenValidation };
