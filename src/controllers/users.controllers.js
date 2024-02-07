@@ -239,10 +239,69 @@ const logoutUser = asyncHandler(async (request, response) => {
 
 })
 
+const changeCurrentPassword = asyncHandler(async (request, response) => {
+  const {oldPassword, newPassword} = request.body
+
+  const user = await User.findById(request.user?._id)
+
+  if (!user) {
+    throw new ApiError(401, "Unauthorized request")
+  }
+
+  const isPasswordValid = user.isPasswordCorrect(oldPassword)
+
+  if (!isPasswordValid) {
+    throw new ApiError(400, "Invalid old password")
+  }
+
+  user.password = newPassword
+  await user.save({ validateBeforeSave: false })
+
+  return response
+  .status(200)
+  .json(
+    new ApiResponse(200, {}, "Password changed successfully")
+  )
+
+})
+
+const updateAccountDetails = asyncHandler(async (request, response) => {
+  const { username , email } = request.body
+
+  if (!username || !email) {
+    throw new ApiError(400, "All fields are required")
+  }
+
+  const user = await User.findByIdAndUpdate(
+    request.user?._id,
+    {
+      $set: {
+        username,
+        email
+      }
+    },
+    {
+      new: true
+    }
+  ).select("-password")
+
+  return response
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      user,
+      "Account details updated successfully"
+    )
+  )
+})
+
 export { 
     registerUser, 
     loginUser, 
     logoutUser, 
     getUserInfo,
-    refreshAccessToken
+    refreshAccessToken,
+    changeCurrentPassword,
+    updateAccountDetails
 };
