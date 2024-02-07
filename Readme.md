@@ -7,7 +7,7 @@
 4. Refresh the token [+]
 5. Logout the user [+]
 6. Add new product [+]
-7. Update a product
+7. Update a product [+]
 8. Get all products
 9. Get single product
 10. Delete a product
