@@ -107,4 +107,65 @@ const updateProduct = asyncHandler(async (request, response) => {
     .json(new ApiResponse(200, product, "Product Updated Successfully"));
 });
 
-export { createProduct, updateProduct };
+
+const deleteProduct = asyncHandler( async (request, response) => {
+  const { productId } = request.params;
+
+  const product = await Product.findByIdAndDelete(productId);
+
+  if (!product) {
+    throw new ApiError(408, "Product Deletion Failed!")
+  }
+
+  return response.status(200).json(
+    new ApiResponse(
+      200,
+      {},
+      "Product Deleted Successfully"
+    )
+    )
+})
+
+const getProducts = asyncHandler(async (request, response) => {
+  const products = await Product.find().select("-__v -updatedAt")
+  
+  if (!products && products.length === 0) {
+    throw new ApiError(404, "No Products Found!")
+  }
+
+  return response
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      products,
+      "Got All Products"
+    )
+  )
+})
+
+const getProduct = asyncHandler(async (request, response) => {
+  const {productId} = request.params;
+
+  if (!productId) {
+    throw new ApiError(408, "Product Id is Missing!")
+  }
+
+  const product = await Product.findById(productId).select("-updatedAt -__v");
+
+  if (!product) {
+    throw new ApiError(404, "Product Not Found!")
+  }
+
+  return response
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      product,
+      "Got Single Product"
+    )
+  )
+})
+
+export { createProduct, updateProduct, deleteProduct, getProducts, getProduct };
